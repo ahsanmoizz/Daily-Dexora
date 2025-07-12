@@ -1,0 +1,829 @@
+{
+  "contractName": "ReentrancyGuardTransient",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "ReentrancyGuardReentrantCall",
+      "type": "error"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.28+commit.7893614a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"ReentrancyGuardReentrantCall\",\"type\":\"error\"}],\"devdoc\":{\"details\":\"Variant of {ReentrancyGuard} that uses transient storage. NOTE: This variant only works on networks where EIP-1153 is available. _Available since v5.1._\",\"errors\":{\"ReentrancyGuardReentrantCall()\":[{\"details\":\"Unauthorized reentrant call.\"}]},\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol\":\"ReentrancyGuardTransient\"},\"evmVersion\":\"cancun\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol\":{\"keccak256\":\"0xe56ff5015046505f81f9d62671a784e933dd099db4c3a8fa8de598f20af2c5a3\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://355863359b4a250f7016836ef9a9672578e898503896f70a0d42b80141586f3e\",\"dweb:/ipfs/QmXXzvoMSFNQf8nRbcyRap5qzcbekWuzbXDY5C8f68JiG3\"]},\"@openzeppelin/contracts/utils/TransientSlot.sol\":{\"keccak256\":\"0xac673fa1e374d9e6107504af363333e3e5f6344d2e83faf57d9bfd41d77cc946\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5982478dbbb218e9dd5a6e83f5c0e8d1654ddf20178484b43ef21dd2246809de\",\"dweb:/ipfs/QmaB1hS68n2kG8vTbt7EPEzmrGhkUbfiFyykGGLsAr9X22\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.3.0) (utils/ReentrancyGuardTransient.sol)\n\npragma solidity ^0.8.24;\n\nimport {TransientSlot} from \"./TransientSlot.sol\";\n\n/**\n * @dev Variant of {ReentrancyGuard} that uses transient storage.\n *\n * NOTE: This variant only works on networks where EIP-1153 is available.\n *\n * _Available since v5.1._\n */\nabstract contract ReentrancyGuardTransient {\n    using TransientSlot for *;\n\n    // keccak256(abi.encode(uint256(keccak256(\"openzeppelin.storage.ReentrancyGuard\")) - 1)) & ~bytes32(uint256(0xff))\n    bytes32 private constant REENTRANCY_GUARD_STORAGE =\n        0x9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f00;\n\n    /**\n     * @dev Unauthorized reentrant call.\n     */\n    error ReentrancyGuardReentrantCall();\n\n    /**\n     * @dev Prevents a contract from calling itself, directly or indirectly.\n     * Calling a `nonReentrant` function from another `nonReentrant`\n     * function is not supported. It is possible to prevent this from happening\n     * by making the `nonReentrant` function external, and making it call a\n     * `private` function that does the actual work.\n     */\n    modifier nonReentrant() {\n        _nonReentrantBefore();\n        _;\n        _nonReentrantAfter();\n    }\n\n    function _nonReentrantBefore() private {\n        // On the first call to nonReentrant, REENTRANCY_GUARD_STORAGE.asBoolean().tload() will be false\n        if (_reentrancyGuardEntered()) {\n            revert ReentrancyGuardReentrantCall();\n        }\n\n        // Any calls to nonReentrant after this point will fail\n        REENTRANCY_GUARD_STORAGE.asBoolean().tstore(true);\n    }\n\n    function _nonReentrantAfter() private {\n        REENTRANCY_GUARD_STORAGE.asBoolean().tstore(false);\n    }\n\n    /**\n     * @dev Returns true if the reentrancy guard is currently set to \"entered\", which indicates there is a\n     * `nonReentrant` function in the call stack.\n     */\n    function _reentrancyGuardEntered() internal view returns (bool) {\n        return REENTRANCY_GUARD_STORAGE.asBoolean().tload();\n    }\n}\n",
+  "sourcePath": "@openzeppelin\\contracts\\utils\\ReentrancyGuardTransient.sol",
+  "ast": {
+    "absolutePath": "@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol",
+    "exportedSymbols": {
+      "ReentrancyGuardTransient": [
+        6885
+      ],
+      "TransientSlot": [
+        8827
+      ]
+    },
+    "id": 6886,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 6818,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "118:24:40"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/utils/TransientSlot.sol",
+        "file": "./TransientSlot.sol",
+        "id": 6820,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 6886,
+        "sourceUnit": 8828,
+        "src": "144:50:40",
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 6819,
+              "name": "TransientSlot",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 8827,
+              "src": "152:13:40",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "abstract": true,
+        "baseContracts": [],
+        "canonicalName": "ReentrancyGuardTransient",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 6821,
+          "nodeType": "StructuredDocumentation",
+          "src": "196:180:40",
+          "text": " @dev Variant of {ReentrancyGuard} that uses transient storage.\n NOTE: This variant only works on networks where EIP-1153 is available.\n _Available since v5.1._"
+        },
+        "fullyImplemented": true,
+        "id": 6885,
+        "linearizedBaseContracts": [
+          6885
+        ],
+        "name": "ReentrancyGuardTransient",
+        "nameLocation": "395:24:40",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "global": false,
+            "id": 6823,
+            "libraryName": {
+              "id": 6822,
+              "name": "TransientSlot",
+              "nameLocations": [
+                "432:13:40"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 8827,
+              "src": "432:13:40"
+            },
+            "nodeType": "UsingForDirective",
+            "src": "426:26:40"
+          },
+          {
+            "constant": true,
+            "id": 6826,
+            "mutability": "constant",
+            "name": "REENTRANCY_GUARD_STORAGE",
+            "nameLocation": "602:24:40",
+            "nodeType": "VariableDeclaration",
+            "scope": 6885,
+            "src": "577:126:40",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bytes32",
+              "typeString": "bytes32"
+            },
+            "typeName": {
+              "id": 6824,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "577:7:40",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            },
+            "value": {
+              "hexValue": "307839623737396231373432326430646639323232333031386233326234643166613436653037313732336436383137653234383664303033626563633535663030",
+              "id": 6825,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "number",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "637:66:40",
+              "typeDescriptions": {
+                "typeIdentifier": "t_rational_70319816728846589445362000750570655803700195216363692647688146666176345628416_by_1",
+                "typeString": "int_const 7031...(69 digits omitted)...8416"
+              },
+              "value": "0x9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f00"
+            },
+            "visibility": "private"
+          },
+          {
+            "documentation": {
+              "id": 6827,
+              "nodeType": "StructuredDocumentation",
+              "src": "710:52:40",
+              "text": " @dev Unauthorized reentrant call."
+            },
+            "errorSelector": "3ee5aeb5",
+            "id": 6829,
+            "name": "ReentrancyGuardReentrantCall",
+            "nameLocation": "773:28:40",
+            "nodeType": "ErrorDefinition",
+            "parameters": {
+              "id": 6828,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "801:2:40"
+            },
+            "src": "767:37:40"
+          },
+          {
+            "body": {
+              "id": 6839,
+              "nodeType": "Block",
+              "src": "1205:79:40",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6832,
+                      "name": "_nonReentrantBefore",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6859,
+                      "src": "1215:19:40",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 6833,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1215:21:40",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6834,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1215:21:40"
+                },
+                {
+                  "id": 6835,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1246:1:40"
+                },
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6836,
+                      "name": "_nonReentrantAfter",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6871,
+                      "src": "1257:18:40",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 6837,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1257:20:40",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6838,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1257:20:40"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6830,
+              "nodeType": "StructuredDocumentation",
+              "src": "810:366:40",
+              "text": " @dev Prevents a contract from calling itself, directly or indirectly.\n Calling a `nonReentrant` function from another `nonReentrant`\n function is not supported. It is possible to prevent this from happening\n by making the `nonReentrant` function external, and making it call a\n `private` function that does the actual work."
+            },
+            "id": 6840,
+            "name": "nonReentrant",
+            "nameLocation": "1190:12:40",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 6831,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1202:2:40"
+            },
+            "src": "1181:103:40",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6858,
+              "nodeType": "Block",
+              "src": "1329:338:40",
+              "statements": [
+                {
+                  "condition": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6843,
+                      "name": "_reentrancyGuardEntered",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6884,
+                      "src": "1448:23:40",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$_t_bool_$",
+                        "typeString": "function () view returns (bool)"
+                      }
+                    },
+                    "id": 6844,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1448:25:40",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 6849,
+                  "nodeType": "IfStatement",
+                  "src": "1444:93:40",
+                  "trueBody": {
+                    "id": 6848,
+                    "nodeType": "Block",
+                    "src": "1475:62:40",
+                    "statements": [
+                      {
+                        "errorCall": {
+                          "arguments": [],
+                          "expression": {
+                            "argumentTypes": [],
+                            "id": 6845,
+                            "name": "ReentrancyGuardReentrantCall",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 6829,
+                            "src": "1496:28:40",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_error_pure$__$returns$_t_error_$",
+                              "typeString": "function () pure returns (error)"
+                            }
+                          },
+                          "id": 6846,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "nameLocations": [],
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "1496:30:40",
+                          "tryCall": false,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_error",
+                            "typeString": "error"
+                          }
+                        },
+                        "id": 6847,
+                        "nodeType": "RevertStatement",
+                        "src": "1489:37:40"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "hexValue": "74727565",
+                        "id": 6855,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "bool",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1655:4:40",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        "value": "true"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "expression": {
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "expression": {
+                            "id": 6850,
+                            "name": "REENTRANCY_GUARD_STORAGE",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 6826,
+                            "src": "1611:24:40",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes32",
+                              "typeString": "bytes32"
+                            }
+                          },
+                          "id": 6852,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberLocation": "1636:9:40",
+                          "memberName": "asBoolean",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 8665,
+                          "src": "1611:34:40",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_pure$_t_bytes32_$returns$_t_userDefinedValueType$_BooleanSlot_$8650_$attached_to$_t_bytes32_$",
+                            "typeString": "function (bytes32) pure returns (TransientSlot.BooleanSlot)"
+                          }
+                        },
+                        "id": 6853,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "nameLocations": [],
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1611:36:40",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_userDefinedValueType$_BooleanSlot_$8650",
+                          "typeString": "TransientSlot.BooleanSlot"
+                        }
+                      },
+                      "id": 6854,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "1648:6:40",
+                      "memberName": "tstore",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 8760,
+                      "src": "1611:43:40",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_userDefinedValueType$_BooleanSlot_$8650_$_t_bool_$returns$__$attached_to$_t_userDefinedValueType$_BooleanSlot_$8650_$",
+                        "typeString": "function (TransientSlot.BooleanSlot,bool)"
+                      }
+                    },
+                    "id": 6856,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1611:49:40",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6857,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1611:49:40"
+                }
+              ]
+            },
+            "id": 6859,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_nonReentrantBefore",
+            "nameLocation": "1299:19:40",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6841,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1318:2:40"
+            },
+            "returnParameters": {
+              "id": 6842,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1329:0:40"
+            },
+            "scope": 6885,
+            "src": "1290:377:40",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 6870,
+              "nodeType": "Block",
+              "src": "1711:67:40",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "hexValue": "66616c7365",
+                        "id": 6867,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "bool",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1765:5:40",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        "value": "false"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "expression": {
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "expression": {
+                            "id": 6862,
+                            "name": "REENTRANCY_GUARD_STORAGE",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 6826,
+                            "src": "1721:24:40",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes32",
+                              "typeString": "bytes32"
+                            }
+                          },
+                          "id": 6864,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberLocation": "1746:9:40",
+                          "memberName": "asBoolean",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 8665,
+                          "src": "1721:34:40",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_pure$_t_bytes32_$returns$_t_userDefinedValueType$_BooleanSlot_$8650_$attached_to$_t_bytes32_$",
+                            "typeString": "function (bytes32) pure returns (TransientSlot.BooleanSlot)"
+                          }
+                        },
+                        "id": 6865,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "nameLocations": [],
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1721:36:40",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_userDefinedValueType$_BooleanSlot_$8650",
+                          "typeString": "TransientSlot.BooleanSlot"
+                        }
+                      },
+                      "id": 6866,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "1758:6:40",
+                      "memberName": "tstore",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 8760,
+                      "src": "1721:43:40",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_userDefinedValueType$_BooleanSlot_$8650_$_t_bool_$returns$__$attached_to$_t_userDefinedValueType$_BooleanSlot_$8650_$",
+                        "typeString": "function (TransientSlot.BooleanSlot,bool)"
+                      }
+                    },
+                    "id": 6868,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1721:50:40",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6869,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1721:50:40"
+                }
+              ]
+            },
+            "id": 6871,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_nonReentrantAfter",
+            "nameLocation": "1682:18:40",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6860,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1700:2:40"
+            },
+            "returnParameters": {
+              "id": 6861,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1711:0:40"
+            },
+            "scope": 6885,
+            "src": "1673:105:40",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 6883,
+              "nodeType": "Block",
+              "src": "2021:68:40",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "expression": {
+                            "id": 6877,
+                            "name": "REENTRANCY_GUARD_STORAGE",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 6826,
+                            "src": "2038:24:40",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes32",
+                              "typeString": "bytes32"
+                            }
+                          },
+                          "id": 6878,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberLocation": "2063:9:40",
+                          "memberName": "asBoolean",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 8665,
+                          "src": "2038:34:40",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_pure$_t_bytes32_$returns$_t_userDefinedValueType$_BooleanSlot_$8650_$attached_to$_t_bytes32_$",
+                            "typeString": "function (bytes32) pure returns (TransientSlot.BooleanSlot)"
+                          }
+                        },
+                        "id": 6879,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "nameLocations": [],
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "2038:36:40",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_userDefinedValueType$_BooleanSlot_$8650",
+                          "typeString": "TransientSlot.BooleanSlot"
+                        }
+                      },
+                      "id": 6880,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "2075:5:40",
+                      "memberName": "tload",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 8749,
+                      "src": "2038:42:40",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_userDefinedValueType$_BooleanSlot_$8650_$returns$_t_bool_$attached_to$_t_userDefinedValueType$_BooleanSlot_$8650_$",
+                        "typeString": "function (TransientSlot.BooleanSlot) view returns (bool)"
+                      }
+                    },
+                    "id": 6881,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2038:44:40",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 6876,
+                  "id": 6882,
+                  "nodeType": "Return",
+                  "src": "2031:51:40"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6872,
+              "nodeType": "StructuredDocumentation",
+              "src": "1784:168:40",
+              "text": " @dev Returns true if the reentrancy guard is currently set to \"entered\", which indicates there is a\n `nonReentrant` function in the call stack."
+            },
+            "id": 6884,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_reentrancyGuardEntered",
+            "nameLocation": "1966:23:40",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6873,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1989:2:40"
+            },
+            "returnParameters": {
+              "id": 6876,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6875,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6884,
+                  "src": "2015:4:40",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 6874,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2015:4:40",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2014:6:40"
+            },
+            "scope": 6885,
+            "src": "1957:132:40",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 6886,
+        "src": "377:1714:40",
+        "usedErrors": [
+          6829
+        ],
+        "usedEvents": []
+      }
+    ],
+    "src": "118:1974:40"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.28+commit.7893614a.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2025-06-05T05:05:53.865Z",
+  "devdoc": {
+    "details": "Variant of {ReentrancyGuard} that uses transient storage. NOTE: This variant only works on networks where EIP-1153 is available. _Available since v5.1._",
+    "errors": {
+      "ReentrancyGuardReentrantCall()": [
+        {
+          "details": "Unauthorized reentrant call."
+        }
+      ]
+    },
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

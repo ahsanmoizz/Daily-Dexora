@@ -1,0 +1,311 @@
+{
+  "contractName": "ISenderCreator",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "initCode",
+          "type": "bytes"
+        }
+      ],
+      "name": "createSender",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "initCallData",
+          "type": "bytes"
+        }
+      ],
+      "name": "initEip7702Sender",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.28+commit.7893614a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"initCode\",\"type\":\"bytes\"}],\"name\":\"createSender\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"initCallData\",\"type\":\"bytes\"}],\"name\":\"initEip7702Sender\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"createSender(bytes)\":{\"details\":\"Creates a new sender contract.\",\"returns\":{\"sender\":\"Address of the newly created sender contract.\"}},\"initEip7702Sender(address,bytes)\":{\"params\":{\"initCallData\":\"- the call data to be passed to the sender account call.\",\"sender\":\"- the 'sender' EIP-7702 account to be initialized.\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"initEip7702Sender(address,bytes)\":{\"notice\":\"Use initCallData to initialize an EIP-7702 account. The caller is the EntryPoint contract and it is already verified to be an EIP-7702 account. Note: Can be called multiple times as long as an appropriate initCode is supplied\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"@account-abstraction/contracts/interfaces/ISenderCreator.sol\":\"ISenderCreator\"},\"evmVersion\":\"cancun\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@account-abstraction/contracts/interfaces/ISenderCreator.sol\":{\"keccak256\":\"0x677f651d733162b80d1af7901e4f36469e362737a8353d1d0cc7bb94489e4ba4\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d6905a80acd70b444ea230b5b582164cb99aaae518bf72c88f8292df31615570\",\"dweb:/ipfs/QmfTKTPwJYf9pmA3T5PE5cCG8GLLDrLaq3jQqMP3pVRL6w\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.28;\n\ninterface ISenderCreator {\n    /**\n     * @dev Creates a new sender contract.\n     * @return sender Address of the newly created sender contract.\n     */\n    function createSender(bytes calldata initCode) external returns (address sender);\n\n    /**\n     * Use initCallData to initialize an EIP-7702 account.\n     * The caller is the EntryPoint contract and it is already verified to be an EIP-7702 account.\n     * Note: Can be called multiple times as long as an appropriate initCode is supplied\n     *\n     * @param sender - the 'sender' EIP-7702 account to be initialized.\n     * @param initCallData - the call data to be passed to the sender account call.\n     */\n    function initEip7702Sender(address sender, bytes calldata initCallData) external;\n}\n",
+  "sourcePath": "@account-abstraction\\contracts\\interfaces\\ISenderCreator.sol",
+  "ast": {
+    "absolutePath": "@account-abstraction/contracts/interfaces/ISenderCreator.sol",
+    "exportedSymbols": {
+      "ISenderCreator": [
+        4994
+      ]
+    },
+    "id": 4995,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4977,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".28"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:24:18"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ISenderCreator",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 4994,
+        "linearizedBaseContracts": [
+          4994
+        ],
+        "name": "ISenderCreator",
+        "nameLocation": "69:14:18",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 4978,
+              "nodeType": "StructuredDocumentation",
+              "src": "90:122:18",
+              "text": " @dev Creates a new sender contract.\n @return sender Address of the newly created sender contract."
+            },
+            "functionSelector": "570e1a36",
+            "id": 4985,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "createSender",
+            "nameLocation": "226:12:18",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4981,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4980,
+                  "mutability": "mutable",
+                  "name": "initCode",
+                  "nameLocation": "254:8:18",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4985,
+                  "src": "239:23:18",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 4979,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "239:5:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "238:25:18"
+            },
+            "returnParameters": {
+              "id": 4984,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4983,
+                  "mutability": "mutable",
+                  "name": "sender",
+                  "nameLocation": "290:6:18",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4985,
+                  "src": "282:14:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4982,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "282:7:18",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "281:16:18"
+            },
+            "scope": 4994,
+            "src": "217:81:18",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 4986,
+              "nodeType": "StructuredDocumentation",
+              "src": "304:421:18",
+              "text": " Use initCallData to initialize an EIP-7702 account.\n The caller is the EntryPoint contract and it is already verified to be an EIP-7702 account.\n Note: Can be called multiple times as long as an appropriate initCode is supplied\n @param sender - the 'sender' EIP-7702 account to be initialized.\n @param initCallData - the call data to be passed to the sender account call."
+            },
+            "functionSelector": "c09ad0d9",
+            "id": 4993,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "initEip7702Sender",
+            "nameLocation": "739:17:18",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4991,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4988,
+                  "mutability": "mutable",
+                  "name": "sender",
+                  "nameLocation": "765:6:18",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4993,
+                  "src": "757:14:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4987,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "757:7:18",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4990,
+                  "mutability": "mutable",
+                  "name": "initCallData",
+                  "nameLocation": "788:12:18",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4993,
+                  "src": "773:27:18",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 4989,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "773:5:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "756:45:18"
+            },
+            "returnParameters": {
+              "id": 4992,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "810:0:18"
+            },
+            "scope": 4994,
+            "src": "730:81:18",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4995,
+        "src": "59:754:18",
+        "usedErrors": [],
+        "usedEvents": []
+      }
+    ],
+    "src": "33:781:18"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.28+commit.7893614a.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2025-06-05T05:05:53.823Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "createSender(bytes)": {
+        "details": "Creates a new sender contract.",
+        "returns": {
+          "sender": "Address of the newly created sender contract."
+        }
+      },
+      "initEip7702Sender(address,bytes)": {
+        "params": {
+          "initCallData": "- the call data to be passed to the sender account call.",
+          "sender": "- the 'sender' EIP-7702 account to be initialized."
+        }
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "initEip7702Sender(address,bytes)": {
+        "notice": "Use initCallData to initialize an EIP-7702 account. The caller is the EntryPoint contract and it is already verified to be an EIP-7702 account. Note: Can be called multiple times as long as an appropriate initCode is supplied"
+      }
+    },
+    "version": 1
+  }
+}

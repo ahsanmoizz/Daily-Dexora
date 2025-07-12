@@ -1,0 +1,2726 @@
+{
+  "contractName": "TransientSlot",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.28+commit.7893614a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"details\":\"Library for reading and writing value-types to specific transient storage slots. Transient slots are often used to store temporary values that are removed after the current transaction. This library helps with reading and writing to such slots without the need for inline assembly.  * Example reading and writing values using transient storage: ```solidity contract Lock {     using TransientSlot for *;     // Define the slot. Alternatively, use the SlotDerivation library to derive the slot.     bytes32 internal constant _LOCK_SLOT = 0xf4678858b2b588224636b8522b729e7722d32fc491da849ed75b3fdf3c84f542;     modifier locked() {         require(!_LOCK_SLOT.asBoolean().tload());         _LOCK_SLOT.asBoolean().tstore(true);         _;         _LOCK_SLOT.asBoolean().tstore(false);     } } ``` TIP: Consider using this library along with {SlotDerivation}.\",\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"@openzeppelin/contracts/utils/TransientSlot.sol\":\"TransientSlot\"},\"evmVersion\":\"cancun\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/utils/TransientSlot.sol\":{\"keccak256\":\"0xac673fa1e374d9e6107504af363333e3e5f6344d2e83faf57d9bfd41d77cc946\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5982478dbbb218e9dd5a6e83f5c0e8d1654ddf20178484b43ef21dd2246809de\",\"dweb:/ipfs/QmaB1hS68n2kG8vTbt7EPEzmrGhkUbfiFyykGGLsAr9X22\"]}},\"version\":1}",
+  "bytecode": "0x60556032600b8282823980515f1a607314602657634e487b7160e01b5f525f60045260245ffd5b305f52607381538281f3fe730000000000000000000000000000000000000000301460806040525f5ffdfea2646970667358221220ac3151ebaca275fe197a9f8c49a68cedf3478edb7608da7c030b795fb604e0b164736f6c634300081c0033",
+  "deployedBytecode": "0x730000000000000000000000000000000000000000301460806040525f5ffdfea2646970667358221220ac3151ebaca275fe197a9f8c49a68cedf3478edb7608da7c030b795fb604e0b164736f6c634300081c0033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "1163:3911:44:-:0;;;;;;;;;;;;;;;-1:-1:-1;;;1163:3911:44;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "1163:3911:44:-:0;;;;;;;;",
+  "source": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.3.0) (utils/TransientSlot.sol)\n// This file was procedurally generated from scripts/generate/templates/TransientSlot.js.\n\npragma solidity ^0.8.24;\n\n/**\n * @dev Library for reading and writing value-types to specific transient storage slots.\n *\n * Transient slots are often used to store temporary values that are removed after the current transaction.\n * This library helps with reading and writing to such slots without the need for inline assembly.\n *\n *  * Example reading and writing values using transient storage:\n * ```solidity\n * contract Lock {\n *     using TransientSlot for *;\n *\n *     // Define the slot. Alternatively, use the SlotDerivation library to derive the slot.\n *     bytes32 internal constant _LOCK_SLOT = 0xf4678858b2b588224636b8522b729e7722d32fc491da849ed75b3fdf3c84f542;\n *\n *     modifier locked() {\n *         require(!_LOCK_SLOT.asBoolean().tload());\n *\n *         _LOCK_SLOT.asBoolean().tstore(true);\n *         _;\n *         _LOCK_SLOT.asBoolean().tstore(false);\n *     }\n * }\n * ```\n *\n * TIP: Consider using this library along with {SlotDerivation}.\n */\nlibrary TransientSlot {\n    /**\n     * @dev UDVT that represents a slot holding an address.\n     */\n    type AddressSlot is bytes32;\n\n    /**\n     * @dev Cast an arbitrary slot to a AddressSlot.\n     */\n    function asAddress(bytes32 slot) internal pure returns (AddressSlot) {\n        return AddressSlot.wrap(slot);\n    }\n\n    /**\n     * @dev UDVT that represents a slot holding a bool.\n     */\n    type BooleanSlot is bytes32;\n\n    /**\n     * @dev Cast an arbitrary slot to a BooleanSlot.\n     */\n    function asBoolean(bytes32 slot) internal pure returns (BooleanSlot) {\n        return BooleanSlot.wrap(slot);\n    }\n\n    /**\n     * @dev UDVT that represents a slot holding a bytes32.\n     */\n    type Bytes32Slot is bytes32;\n\n    /**\n     * @dev Cast an arbitrary slot to a Bytes32Slot.\n     */\n    function asBytes32(bytes32 slot) internal pure returns (Bytes32Slot) {\n        return Bytes32Slot.wrap(slot);\n    }\n\n    /**\n     * @dev UDVT that represents a slot holding a uint256.\n     */\n    type Uint256Slot is bytes32;\n\n    /**\n     * @dev Cast an arbitrary slot to a Uint256Slot.\n     */\n    function asUint256(bytes32 slot) internal pure returns (Uint256Slot) {\n        return Uint256Slot.wrap(slot);\n    }\n\n    /**\n     * @dev UDVT that represents a slot holding a int256.\n     */\n    type Int256Slot is bytes32;\n\n    /**\n     * @dev Cast an arbitrary slot to a Int256Slot.\n     */\n    function asInt256(bytes32 slot) internal pure returns (Int256Slot) {\n        return Int256Slot.wrap(slot);\n    }\n\n    /**\n     * @dev Load the value held at location `slot` in transient storage.\n     */\n    function tload(AddressSlot slot) internal view returns (address value) {\n        assembly (\"memory-safe\") {\n            value := tload(slot)\n        }\n    }\n\n    /**\n     * @dev Store `value` at location `slot` in transient storage.\n     */\n    function tstore(AddressSlot slot, address value) internal {\n        assembly (\"memory-safe\") {\n            tstore(slot, value)\n        }\n    }\n\n    /**\n     * @dev Load the value held at location `slot` in transient storage.\n     */\n    function tload(BooleanSlot slot) internal view returns (bool value) {\n        assembly (\"memory-safe\") {\n            value := tload(slot)\n        }\n    }\n\n    /**\n     * @dev Store `value` at location `slot` in transient storage.\n     */\n    function tstore(BooleanSlot slot, bool value) internal {\n        assembly (\"memory-safe\") {\n            tstore(slot, value)\n        }\n    }\n\n    /**\n     * @dev Load the value held at location `slot` in transient storage.\n     */\n    function tload(Bytes32Slot slot) internal view returns (bytes32 value) {\n        assembly (\"memory-safe\") {\n            value := tload(slot)\n        }\n    }\n\n    /**\n     * @dev Store `value` at location `slot` in transient storage.\n     */\n    function tstore(Bytes32Slot slot, bytes32 value) internal {\n        assembly (\"memory-safe\") {\n            tstore(slot, value)\n        }\n    }\n\n    /**\n     * @dev Load the value held at location `slot` in transient storage.\n     */\n    function tload(Uint256Slot slot) internal view returns (uint256 value) {\n        assembly (\"memory-safe\") {\n            value := tload(slot)\n        }\n    }\n\n    /**\n     * @dev Store `value` at location `slot` in transient storage.\n     */\n    function tstore(Uint256Slot slot, uint256 value) internal {\n        assembly (\"memory-safe\") {\n            tstore(slot, value)\n        }\n    }\n\n    /**\n     * @dev Load the value held at location `slot` in transient storage.\n     */\n    function tload(Int256Slot slot) internal view returns (int256 value) {\n        assembly (\"memory-safe\") {\n            value := tload(slot)\n        }\n    }\n\n    /**\n     * @dev Store `value` at location `slot` in transient storage.\n     */\n    function tstore(Int256Slot slot, int256 value) internal {\n        assembly (\"memory-safe\") {\n            tstore(slot, value)\n        }\n    }\n}\n",
+  "sourcePath": "@openzeppelin\\contracts\\utils\\TransientSlot.sol",
+  "ast": {
+    "absolutePath": "@openzeppelin/contracts/utils/TransientSlot.sol",
+    "exportedSymbols": {
+      "TransientSlot": [
+        8827
+      ]
+    },
+    "id": 8828,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 8630,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "197:24:44"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "TransientSlot",
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": {
+          "id": 8631,
+          "nodeType": "StructuredDocumentation",
+          "src": "223:939:44",
+          "text": " @dev Library for reading and writing value-types to specific transient storage slots.\n Transient slots are often used to store temporary values that are removed after the current transaction.\n This library helps with reading and writing to such slots without the need for inline assembly.\n  * Example reading and writing values using transient storage:\n ```solidity\n contract Lock {\n     using TransientSlot for *;\n     // Define the slot. Alternatively, use the SlotDerivation library to derive the slot.\n     bytes32 internal constant _LOCK_SLOT = 0xf4678858b2b588224636b8522b729e7722d32fc491da849ed75b3fdf3c84f542;\n     modifier locked() {\n         require(!_LOCK_SLOT.asBoolean().tload());\n         _LOCK_SLOT.asBoolean().tstore(true);\n         _;\n         _LOCK_SLOT.asBoolean().tstore(false);\n     }\n }\n ```\n TIP: Consider using this library along with {SlotDerivation}."
+        },
+        "fullyImplemented": true,
+        "id": 8827,
+        "linearizedBaseContracts": [
+          8827
+        ],
+        "name": "TransientSlot",
+        "nameLocation": "1171:13:44",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "TransientSlot.AddressSlot",
+            "id": 8633,
+            "name": "AddressSlot",
+            "nameLocation": "1272:11:44",
+            "nodeType": "UserDefinedValueTypeDefinition",
+            "src": "1267:28:44",
+            "underlyingType": {
+              "id": 8632,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "1287:7:44",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            }
+          },
+          {
+            "body": {
+              "id": 8647,
+              "nodeType": "Block",
+              "src": "1439:46:44",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 8644,
+                        "name": "slot",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8636,
+                        "src": "1473:4:44",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      ],
+                      "expression": {
+                        "id": 8642,
+                        "name": "AddressSlot",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8633,
+                        "src": "1456:11:44",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_userDefinedValueType$_AddressSlot_$8633_$",
+                          "typeString": "type(TransientSlot.AddressSlot)"
+                        }
+                      },
+                      "id": 8643,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberLocation": "1468:4:44",
+                      "memberName": "wrap",
+                      "nodeType": "MemberAccess",
+                      "src": "1456:16:44",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_wrap_pure$_t_bytes32_$returns$_t_userDefinedValueType$_AddressSlot_$8633_$",
+                        "typeString": "function (bytes32) pure returns (TransientSlot.AddressSlot)"
+                      }
+                    },
+                    "id": 8645,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1456:22:44",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_AddressSlot_$8633",
+                      "typeString": "TransientSlot.AddressSlot"
+                    }
+                  },
+                  "functionReturnParameters": 8641,
+                  "id": 8646,
+                  "nodeType": "Return",
+                  "src": "1449:29:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8634,
+              "nodeType": "StructuredDocumentation",
+              "src": "1301:64:44",
+              "text": " @dev Cast an arbitrary slot to a AddressSlot."
+            },
+            "id": 8648,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "asAddress",
+            "nameLocation": "1379:9:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8637,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8636,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "1397:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8648,
+                  "src": "1389:12:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8635,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1389:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1388:14:44"
+            },
+            "returnParameters": {
+              "id": 8641,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8640,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8648,
+                  "src": "1426:11:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_AddressSlot_$8633",
+                    "typeString": "TransientSlot.AddressSlot"
+                  },
+                  "typeName": {
+                    "id": 8639,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8638,
+                      "name": "AddressSlot",
+                      "nameLocations": [
+                        "1426:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8633,
+                      "src": "1426:11:44"
+                    },
+                    "referencedDeclaration": 8633,
+                    "src": "1426:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_AddressSlot_$8633",
+                      "typeString": "TransientSlot.AddressSlot"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1425:13:44"
+            },
+            "scope": 8827,
+            "src": "1370:115:44",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "canonicalName": "TransientSlot.BooleanSlot",
+            "id": 8650,
+            "name": "BooleanSlot",
+            "nameLocation": "1568:11:44",
+            "nodeType": "UserDefinedValueTypeDefinition",
+            "src": "1563:28:44",
+            "underlyingType": {
+              "id": 8649,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "1583:7:44",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            }
+          },
+          {
+            "body": {
+              "id": 8664,
+              "nodeType": "Block",
+              "src": "1735:46:44",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 8661,
+                        "name": "slot",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8653,
+                        "src": "1769:4:44",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      ],
+                      "expression": {
+                        "id": 8659,
+                        "name": "BooleanSlot",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8650,
+                        "src": "1752:11:44",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_userDefinedValueType$_BooleanSlot_$8650_$",
+                          "typeString": "type(TransientSlot.BooleanSlot)"
+                        }
+                      },
+                      "id": 8660,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberLocation": "1764:4:44",
+                      "memberName": "wrap",
+                      "nodeType": "MemberAccess",
+                      "src": "1752:16:44",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_wrap_pure$_t_bytes32_$returns$_t_userDefinedValueType$_BooleanSlot_$8650_$",
+                        "typeString": "function (bytes32) pure returns (TransientSlot.BooleanSlot)"
+                      }
+                    },
+                    "id": 8662,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1752:22:44",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_BooleanSlot_$8650",
+                      "typeString": "TransientSlot.BooleanSlot"
+                    }
+                  },
+                  "functionReturnParameters": 8658,
+                  "id": 8663,
+                  "nodeType": "Return",
+                  "src": "1745:29:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8651,
+              "nodeType": "StructuredDocumentation",
+              "src": "1597:64:44",
+              "text": " @dev Cast an arbitrary slot to a BooleanSlot."
+            },
+            "id": 8665,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "asBoolean",
+            "nameLocation": "1675:9:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8654,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8653,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "1693:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8665,
+                  "src": "1685:12:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8652,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1685:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1684:14:44"
+            },
+            "returnParameters": {
+              "id": 8658,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8657,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8665,
+                  "src": "1722:11:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_BooleanSlot_$8650",
+                    "typeString": "TransientSlot.BooleanSlot"
+                  },
+                  "typeName": {
+                    "id": 8656,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8655,
+                      "name": "BooleanSlot",
+                      "nameLocations": [
+                        "1722:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8650,
+                      "src": "1722:11:44"
+                    },
+                    "referencedDeclaration": 8650,
+                    "src": "1722:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_BooleanSlot_$8650",
+                      "typeString": "TransientSlot.BooleanSlot"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1721:13:44"
+            },
+            "scope": 8827,
+            "src": "1666:115:44",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "canonicalName": "TransientSlot.Bytes32Slot",
+            "id": 8667,
+            "name": "Bytes32Slot",
+            "nameLocation": "1867:11:44",
+            "nodeType": "UserDefinedValueTypeDefinition",
+            "src": "1862:28:44",
+            "underlyingType": {
+              "id": 8666,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "1882:7:44",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            }
+          },
+          {
+            "body": {
+              "id": 8681,
+              "nodeType": "Block",
+              "src": "2034:46:44",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 8678,
+                        "name": "slot",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8670,
+                        "src": "2068:4:44",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      ],
+                      "expression": {
+                        "id": 8676,
+                        "name": "Bytes32Slot",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8667,
+                        "src": "2051:11:44",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_userDefinedValueType$_Bytes32Slot_$8667_$",
+                          "typeString": "type(TransientSlot.Bytes32Slot)"
+                        }
+                      },
+                      "id": 8677,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberLocation": "2063:4:44",
+                      "memberName": "wrap",
+                      "nodeType": "MemberAccess",
+                      "src": "2051:16:44",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_wrap_pure$_t_bytes32_$returns$_t_userDefinedValueType$_Bytes32Slot_$8667_$",
+                        "typeString": "function (bytes32) pure returns (TransientSlot.Bytes32Slot)"
+                      }
+                    },
+                    "id": 8679,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2051:22:44",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Bytes32Slot_$8667",
+                      "typeString": "TransientSlot.Bytes32Slot"
+                    }
+                  },
+                  "functionReturnParameters": 8675,
+                  "id": 8680,
+                  "nodeType": "Return",
+                  "src": "2044:29:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8668,
+              "nodeType": "StructuredDocumentation",
+              "src": "1896:64:44",
+              "text": " @dev Cast an arbitrary slot to a Bytes32Slot."
+            },
+            "id": 8682,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "asBytes32",
+            "nameLocation": "1974:9:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8671,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8670,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "1992:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8682,
+                  "src": "1984:12:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8669,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1984:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1983:14:44"
+            },
+            "returnParameters": {
+              "id": 8675,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8674,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8682,
+                  "src": "2021:11:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_Bytes32Slot_$8667",
+                    "typeString": "TransientSlot.Bytes32Slot"
+                  },
+                  "typeName": {
+                    "id": 8673,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8672,
+                      "name": "Bytes32Slot",
+                      "nameLocations": [
+                        "2021:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8667,
+                      "src": "2021:11:44"
+                    },
+                    "referencedDeclaration": 8667,
+                    "src": "2021:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Bytes32Slot_$8667",
+                      "typeString": "TransientSlot.Bytes32Slot"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2020:13:44"
+            },
+            "scope": 8827,
+            "src": "1965:115:44",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "canonicalName": "TransientSlot.Uint256Slot",
+            "id": 8684,
+            "name": "Uint256Slot",
+            "nameLocation": "2166:11:44",
+            "nodeType": "UserDefinedValueTypeDefinition",
+            "src": "2161:28:44",
+            "underlyingType": {
+              "id": 8683,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "2181:7:44",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            }
+          },
+          {
+            "body": {
+              "id": 8698,
+              "nodeType": "Block",
+              "src": "2333:46:44",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 8695,
+                        "name": "slot",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8687,
+                        "src": "2367:4:44",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      ],
+                      "expression": {
+                        "id": 8693,
+                        "name": "Uint256Slot",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8684,
+                        "src": "2350:11:44",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_userDefinedValueType$_Uint256Slot_$8684_$",
+                          "typeString": "type(TransientSlot.Uint256Slot)"
+                        }
+                      },
+                      "id": 8694,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberLocation": "2362:4:44",
+                      "memberName": "wrap",
+                      "nodeType": "MemberAccess",
+                      "src": "2350:16:44",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_wrap_pure$_t_bytes32_$returns$_t_userDefinedValueType$_Uint256Slot_$8684_$",
+                        "typeString": "function (bytes32) pure returns (TransientSlot.Uint256Slot)"
+                      }
+                    },
+                    "id": 8696,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2350:22:44",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Uint256Slot_$8684",
+                      "typeString": "TransientSlot.Uint256Slot"
+                    }
+                  },
+                  "functionReturnParameters": 8692,
+                  "id": 8697,
+                  "nodeType": "Return",
+                  "src": "2343:29:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8685,
+              "nodeType": "StructuredDocumentation",
+              "src": "2195:64:44",
+              "text": " @dev Cast an arbitrary slot to a Uint256Slot."
+            },
+            "id": 8699,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "asUint256",
+            "nameLocation": "2273:9:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8688,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8687,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "2291:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8699,
+                  "src": "2283:12:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8686,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2283:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2282:14:44"
+            },
+            "returnParameters": {
+              "id": 8692,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8691,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8699,
+                  "src": "2320:11:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_Uint256Slot_$8684",
+                    "typeString": "TransientSlot.Uint256Slot"
+                  },
+                  "typeName": {
+                    "id": 8690,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8689,
+                      "name": "Uint256Slot",
+                      "nameLocations": [
+                        "2320:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8684,
+                      "src": "2320:11:44"
+                    },
+                    "referencedDeclaration": 8684,
+                    "src": "2320:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Uint256Slot_$8684",
+                      "typeString": "TransientSlot.Uint256Slot"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2319:13:44"
+            },
+            "scope": 8827,
+            "src": "2264:115:44",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "canonicalName": "TransientSlot.Int256Slot",
+            "id": 8701,
+            "name": "Int256Slot",
+            "nameLocation": "2464:10:44",
+            "nodeType": "UserDefinedValueTypeDefinition",
+            "src": "2459:27:44",
+            "underlyingType": {
+              "id": 8700,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "2478:7:44",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            }
+          },
+          {
+            "body": {
+              "id": 8715,
+              "nodeType": "Block",
+              "src": "2627:45:44",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 8712,
+                        "name": "slot",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8704,
+                        "src": "2660:4:44",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      ],
+                      "expression": {
+                        "id": 8710,
+                        "name": "Int256Slot",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8701,
+                        "src": "2644:10:44",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_userDefinedValueType$_Int256Slot_$8701_$",
+                          "typeString": "type(TransientSlot.Int256Slot)"
+                        }
+                      },
+                      "id": 8711,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberLocation": "2655:4:44",
+                      "memberName": "wrap",
+                      "nodeType": "MemberAccess",
+                      "src": "2644:15:44",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_wrap_pure$_t_bytes32_$returns$_t_userDefinedValueType$_Int256Slot_$8701_$",
+                        "typeString": "function (bytes32) pure returns (TransientSlot.Int256Slot)"
+                      }
+                    },
+                    "id": 8713,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2644:21:44",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Int256Slot_$8701",
+                      "typeString": "TransientSlot.Int256Slot"
+                    }
+                  },
+                  "functionReturnParameters": 8709,
+                  "id": 8714,
+                  "nodeType": "Return",
+                  "src": "2637:28:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8702,
+              "nodeType": "StructuredDocumentation",
+              "src": "2492:63:44",
+              "text": " @dev Cast an arbitrary slot to a Int256Slot."
+            },
+            "id": 8716,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "asInt256",
+            "nameLocation": "2569:8:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8705,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8704,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "2586:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8716,
+                  "src": "2578:12:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8703,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2578:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2577:14:44"
+            },
+            "returnParameters": {
+              "id": 8709,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8708,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8716,
+                  "src": "2615:10:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_Int256Slot_$8701",
+                    "typeString": "TransientSlot.Int256Slot"
+                  },
+                  "typeName": {
+                    "id": 8707,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8706,
+                      "name": "Int256Slot",
+                      "nameLocations": [
+                        "2615:10:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8701,
+                      "src": "2615:10:44"
+                    },
+                    "referencedDeclaration": 8701,
+                    "src": "2615:10:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Int256Slot_$8701",
+                      "typeString": "TransientSlot.Int256Slot"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2614:12:44"
+            },
+            "scope": 8827,
+            "src": "2560:112:44",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8726,
+              "nodeType": "Block",
+              "src": "2838:85:44",
+              "statements": [
+                {
+                  "AST": {
+                    "nativeSrc": "2873:44:44",
+                    "nodeType": "YulBlock",
+                    "src": "2873:44:44",
+                    "statements": [
+                      {
+                        "nativeSrc": "2887:20:44",
+                        "nodeType": "YulAssignment",
+                        "src": "2887:20:44",
+                        "value": {
+                          "arguments": [
+                            {
+                              "name": "slot",
+                              "nativeSrc": "2902:4:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "2902:4:44"
+                            }
+                          ],
+                          "functionName": {
+                            "name": "tload",
+                            "nativeSrc": "2896:5:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "2896:5:44"
+                          },
+                          "nativeSrc": "2896:11:44",
+                          "nodeType": "YulFunctionCall",
+                          "src": "2896:11:44"
+                        },
+                        "variableNames": [
+                          {
+                            "name": "value",
+                            "nativeSrc": "2887:5:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "2887:5:44"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "evmVersion": "cancun",
+                  "externalReferences": [
+                    {
+                      "declaration": 8720,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "2902:4:44",
+                      "valueSize": 1
+                    },
+                    {
+                      "declaration": 8723,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "2887:5:44",
+                      "valueSize": 1
+                    }
+                  ],
+                  "flags": [
+                    "memory-safe"
+                  ],
+                  "id": 8725,
+                  "nodeType": "InlineAssembly",
+                  "src": "2848:69:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8717,
+              "nodeType": "StructuredDocumentation",
+              "src": "2678:84:44",
+              "text": " @dev Load the value held at location `slot` in transient storage."
+            },
+            "id": 8727,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tload",
+            "nameLocation": "2776:5:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8721,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8720,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "2794:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8727,
+                  "src": "2782:16:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_AddressSlot_$8633",
+                    "typeString": "TransientSlot.AddressSlot"
+                  },
+                  "typeName": {
+                    "id": 8719,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8718,
+                      "name": "AddressSlot",
+                      "nameLocations": [
+                        "2782:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8633,
+                      "src": "2782:11:44"
+                    },
+                    "referencedDeclaration": 8633,
+                    "src": "2782:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_AddressSlot_$8633",
+                      "typeString": "TransientSlot.AddressSlot"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2781:18:44"
+            },
+            "returnParameters": {
+              "id": 8724,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8723,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "2831:5:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8727,
+                  "src": "2823:13:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 8722,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2823:7:44",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2822:15:44"
+            },
+            "scope": 8827,
+            "src": "2767:156:44",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8737,
+              "nodeType": "Block",
+              "src": "3070:84:44",
+              "statements": [
+                {
+                  "AST": {
+                    "nativeSrc": "3105:43:44",
+                    "nodeType": "YulBlock",
+                    "src": "3105:43:44",
+                    "statements": [
+                      {
+                        "expression": {
+                          "arguments": [
+                            {
+                              "name": "slot",
+                              "nativeSrc": "3126:4:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "3126:4:44"
+                            },
+                            {
+                              "name": "value",
+                              "nativeSrc": "3132:5:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "3132:5:44"
+                            }
+                          ],
+                          "functionName": {
+                            "name": "tstore",
+                            "nativeSrc": "3119:6:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "3119:6:44"
+                          },
+                          "nativeSrc": "3119:19:44",
+                          "nodeType": "YulFunctionCall",
+                          "src": "3119:19:44"
+                        },
+                        "nativeSrc": "3119:19:44",
+                        "nodeType": "YulExpressionStatement",
+                        "src": "3119:19:44"
+                      }
+                    ]
+                  },
+                  "evmVersion": "cancun",
+                  "externalReferences": [
+                    {
+                      "declaration": 8731,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "3126:4:44",
+                      "valueSize": 1
+                    },
+                    {
+                      "declaration": 8733,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "3132:5:44",
+                      "valueSize": 1
+                    }
+                  ],
+                  "flags": [
+                    "memory-safe"
+                  ],
+                  "id": 8736,
+                  "nodeType": "InlineAssembly",
+                  "src": "3080:68:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8728,
+              "nodeType": "StructuredDocumentation",
+              "src": "2929:78:44",
+              "text": " @dev Store `value` at location `slot` in transient storage."
+            },
+            "id": 8738,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tstore",
+            "nameLocation": "3021:6:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8734,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8731,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "3040:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8738,
+                  "src": "3028:16:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_AddressSlot_$8633",
+                    "typeString": "TransientSlot.AddressSlot"
+                  },
+                  "typeName": {
+                    "id": 8730,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8729,
+                      "name": "AddressSlot",
+                      "nameLocations": [
+                        "3028:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8633,
+                      "src": "3028:11:44"
+                    },
+                    "referencedDeclaration": 8633,
+                    "src": "3028:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_AddressSlot_$8633",
+                      "typeString": "TransientSlot.AddressSlot"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8733,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "3054:5:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8738,
+                  "src": "3046:13:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 8732,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3046:7:44",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3027:33:44"
+            },
+            "returnParameters": {
+              "id": 8735,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3070:0:44"
+            },
+            "scope": 8827,
+            "src": "3012:142:44",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8748,
+              "nodeType": "Block",
+              "src": "3317:85:44",
+              "statements": [
+                {
+                  "AST": {
+                    "nativeSrc": "3352:44:44",
+                    "nodeType": "YulBlock",
+                    "src": "3352:44:44",
+                    "statements": [
+                      {
+                        "nativeSrc": "3366:20:44",
+                        "nodeType": "YulAssignment",
+                        "src": "3366:20:44",
+                        "value": {
+                          "arguments": [
+                            {
+                              "name": "slot",
+                              "nativeSrc": "3381:4:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "3381:4:44"
+                            }
+                          ],
+                          "functionName": {
+                            "name": "tload",
+                            "nativeSrc": "3375:5:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "3375:5:44"
+                          },
+                          "nativeSrc": "3375:11:44",
+                          "nodeType": "YulFunctionCall",
+                          "src": "3375:11:44"
+                        },
+                        "variableNames": [
+                          {
+                            "name": "value",
+                            "nativeSrc": "3366:5:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "3366:5:44"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "evmVersion": "cancun",
+                  "externalReferences": [
+                    {
+                      "declaration": 8742,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "3381:4:44",
+                      "valueSize": 1
+                    },
+                    {
+                      "declaration": 8745,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "3366:5:44",
+                      "valueSize": 1
+                    }
+                  ],
+                  "flags": [
+                    "memory-safe"
+                  ],
+                  "id": 8747,
+                  "nodeType": "InlineAssembly",
+                  "src": "3327:69:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8739,
+              "nodeType": "StructuredDocumentation",
+              "src": "3160:84:44",
+              "text": " @dev Load the value held at location `slot` in transient storage."
+            },
+            "id": 8749,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tload",
+            "nameLocation": "3258:5:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8743,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8742,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "3276:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8749,
+                  "src": "3264:16:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_BooleanSlot_$8650",
+                    "typeString": "TransientSlot.BooleanSlot"
+                  },
+                  "typeName": {
+                    "id": 8741,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8740,
+                      "name": "BooleanSlot",
+                      "nameLocations": [
+                        "3264:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8650,
+                      "src": "3264:11:44"
+                    },
+                    "referencedDeclaration": 8650,
+                    "src": "3264:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_BooleanSlot_$8650",
+                      "typeString": "TransientSlot.BooleanSlot"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3263:18:44"
+            },
+            "returnParameters": {
+              "id": 8746,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8745,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "3310:5:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8749,
+                  "src": "3305:10:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8744,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3305:4:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3304:12:44"
+            },
+            "scope": 8827,
+            "src": "3249:153:44",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8759,
+              "nodeType": "Block",
+              "src": "3546:84:44",
+              "statements": [
+                {
+                  "AST": {
+                    "nativeSrc": "3581:43:44",
+                    "nodeType": "YulBlock",
+                    "src": "3581:43:44",
+                    "statements": [
+                      {
+                        "expression": {
+                          "arguments": [
+                            {
+                              "name": "slot",
+                              "nativeSrc": "3602:4:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "3602:4:44"
+                            },
+                            {
+                              "name": "value",
+                              "nativeSrc": "3608:5:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "3608:5:44"
+                            }
+                          ],
+                          "functionName": {
+                            "name": "tstore",
+                            "nativeSrc": "3595:6:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "3595:6:44"
+                          },
+                          "nativeSrc": "3595:19:44",
+                          "nodeType": "YulFunctionCall",
+                          "src": "3595:19:44"
+                        },
+                        "nativeSrc": "3595:19:44",
+                        "nodeType": "YulExpressionStatement",
+                        "src": "3595:19:44"
+                      }
+                    ]
+                  },
+                  "evmVersion": "cancun",
+                  "externalReferences": [
+                    {
+                      "declaration": 8753,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "3602:4:44",
+                      "valueSize": 1
+                    },
+                    {
+                      "declaration": 8755,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "3608:5:44",
+                      "valueSize": 1
+                    }
+                  ],
+                  "flags": [
+                    "memory-safe"
+                  ],
+                  "id": 8758,
+                  "nodeType": "InlineAssembly",
+                  "src": "3556:68:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8750,
+              "nodeType": "StructuredDocumentation",
+              "src": "3408:78:44",
+              "text": " @dev Store `value` at location `slot` in transient storage."
+            },
+            "id": 8760,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tstore",
+            "nameLocation": "3500:6:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8756,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8753,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "3519:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8760,
+                  "src": "3507:16:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_BooleanSlot_$8650",
+                    "typeString": "TransientSlot.BooleanSlot"
+                  },
+                  "typeName": {
+                    "id": 8752,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8751,
+                      "name": "BooleanSlot",
+                      "nameLocations": [
+                        "3507:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8650,
+                      "src": "3507:11:44"
+                    },
+                    "referencedDeclaration": 8650,
+                    "src": "3507:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_BooleanSlot_$8650",
+                      "typeString": "TransientSlot.BooleanSlot"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8755,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "3530:5:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8760,
+                  "src": "3525:10:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8754,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3525:4:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3506:30:44"
+            },
+            "returnParameters": {
+              "id": 8757,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3546:0:44"
+            },
+            "scope": 8827,
+            "src": "3491:139:44",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8770,
+              "nodeType": "Block",
+              "src": "3796:85:44",
+              "statements": [
+                {
+                  "AST": {
+                    "nativeSrc": "3831:44:44",
+                    "nodeType": "YulBlock",
+                    "src": "3831:44:44",
+                    "statements": [
+                      {
+                        "nativeSrc": "3845:20:44",
+                        "nodeType": "YulAssignment",
+                        "src": "3845:20:44",
+                        "value": {
+                          "arguments": [
+                            {
+                              "name": "slot",
+                              "nativeSrc": "3860:4:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "3860:4:44"
+                            }
+                          ],
+                          "functionName": {
+                            "name": "tload",
+                            "nativeSrc": "3854:5:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "3854:5:44"
+                          },
+                          "nativeSrc": "3854:11:44",
+                          "nodeType": "YulFunctionCall",
+                          "src": "3854:11:44"
+                        },
+                        "variableNames": [
+                          {
+                            "name": "value",
+                            "nativeSrc": "3845:5:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "3845:5:44"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "evmVersion": "cancun",
+                  "externalReferences": [
+                    {
+                      "declaration": 8764,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "3860:4:44",
+                      "valueSize": 1
+                    },
+                    {
+                      "declaration": 8767,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "3845:5:44",
+                      "valueSize": 1
+                    }
+                  ],
+                  "flags": [
+                    "memory-safe"
+                  ],
+                  "id": 8769,
+                  "nodeType": "InlineAssembly",
+                  "src": "3806:69:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8761,
+              "nodeType": "StructuredDocumentation",
+              "src": "3636:84:44",
+              "text": " @dev Load the value held at location `slot` in transient storage."
+            },
+            "id": 8771,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tload",
+            "nameLocation": "3734:5:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8765,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8764,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "3752:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8771,
+                  "src": "3740:16:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_Bytes32Slot_$8667",
+                    "typeString": "TransientSlot.Bytes32Slot"
+                  },
+                  "typeName": {
+                    "id": 8763,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8762,
+                      "name": "Bytes32Slot",
+                      "nameLocations": [
+                        "3740:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8667,
+                      "src": "3740:11:44"
+                    },
+                    "referencedDeclaration": 8667,
+                    "src": "3740:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Bytes32Slot_$8667",
+                      "typeString": "TransientSlot.Bytes32Slot"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3739:18:44"
+            },
+            "returnParameters": {
+              "id": 8768,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8767,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "3789:5:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8771,
+                  "src": "3781:13:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8766,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3781:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3780:15:44"
+            },
+            "scope": 8827,
+            "src": "3725:156:44",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8781,
+              "nodeType": "Block",
+              "src": "4028:84:44",
+              "statements": [
+                {
+                  "AST": {
+                    "nativeSrc": "4063:43:44",
+                    "nodeType": "YulBlock",
+                    "src": "4063:43:44",
+                    "statements": [
+                      {
+                        "expression": {
+                          "arguments": [
+                            {
+                              "name": "slot",
+                              "nativeSrc": "4084:4:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "4084:4:44"
+                            },
+                            {
+                              "name": "value",
+                              "nativeSrc": "4090:5:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "4090:5:44"
+                            }
+                          ],
+                          "functionName": {
+                            "name": "tstore",
+                            "nativeSrc": "4077:6:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "4077:6:44"
+                          },
+                          "nativeSrc": "4077:19:44",
+                          "nodeType": "YulFunctionCall",
+                          "src": "4077:19:44"
+                        },
+                        "nativeSrc": "4077:19:44",
+                        "nodeType": "YulExpressionStatement",
+                        "src": "4077:19:44"
+                      }
+                    ]
+                  },
+                  "evmVersion": "cancun",
+                  "externalReferences": [
+                    {
+                      "declaration": 8775,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "4084:4:44",
+                      "valueSize": 1
+                    },
+                    {
+                      "declaration": 8777,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "4090:5:44",
+                      "valueSize": 1
+                    }
+                  ],
+                  "flags": [
+                    "memory-safe"
+                  ],
+                  "id": 8780,
+                  "nodeType": "InlineAssembly",
+                  "src": "4038:68:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8772,
+              "nodeType": "StructuredDocumentation",
+              "src": "3887:78:44",
+              "text": " @dev Store `value` at location `slot` in transient storage."
+            },
+            "id": 8782,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tstore",
+            "nameLocation": "3979:6:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8778,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8775,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "3998:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8782,
+                  "src": "3986:16:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_Bytes32Slot_$8667",
+                    "typeString": "TransientSlot.Bytes32Slot"
+                  },
+                  "typeName": {
+                    "id": 8774,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8773,
+                      "name": "Bytes32Slot",
+                      "nameLocations": [
+                        "3986:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8667,
+                      "src": "3986:11:44"
+                    },
+                    "referencedDeclaration": 8667,
+                    "src": "3986:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Bytes32Slot_$8667",
+                      "typeString": "TransientSlot.Bytes32Slot"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8777,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "4012:5:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8782,
+                  "src": "4004:13:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8776,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4004:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3985:33:44"
+            },
+            "returnParameters": {
+              "id": 8779,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "4028:0:44"
+            },
+            "scope": 8827,
+            "src": "3970:142:44",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8792,
+              "nodeType": "Block",
+              "src": "4278:85:44",
+              "statements": [
+                {
+                  "AST": {
+                    "nativeSrc": "4313:44:44",
+                    "nodeType": "YulBlock",
+                    "src": "4313:44:44",
+                    "statements": [
+                      {
+                        "nativeSrc": "4327:20:44",
+                        "nodeType": "YulAssignment",
+                        "src": "4327:20:44",
+                        "value": {
+                          "arguments": [
+                            {
+                              "name": "slot",
+                              "nativeSrc": "4342:4:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "4342:4:44"
+                            }
+                          ],
+                          "functionName": {
+                            "name": "tload",
+                            "nativeSrc": "4336:5:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "4336:5:44"
+                          },
+                          "nativeSrc": "4336:11:44",
+                          "nodeType": "YulFunctionCall",
+                          "src": "4336:11:44"
+                        },
+                        "variableNames": [
+                          {
+                            "name": "value",
+                            "nativeSrc": "4327:5:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "4327:5:44"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "evmVersion": "cancun",
+                  "externalReferences": [
+                    {
+                      "declaration": 8786,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "4342:4:44",
+                      "valueSize": 1
+                    },
+                    {
+                      "declaration": 8789,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "4327:5:44",
+                      "valueSize": 1
+                    }
+                  ],
+                  "flags": [
+                    "memory-safe"
+                  ],
+                  "id": 8791,
+                  "nodeType": "InlineAssembly",
+                  "src": "4288:69:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8783,
+              "nodeType": "StructuredDocumentation",
+              "src": "4118:84:44",
+              "text": " @dev Load the value held at location `slot` in transient storage."
+            },
+            "id": 8793,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tload",
+            "nameLocation": "4216:5:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8787,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8786,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "4234:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8793,
+                  "src": "4222:16:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_Uint256Slot_$8684",
+                    "typeString": "TransientSlot.Uint256Slot"
+                  },
+                  "typeName": {
+                    "id": 8785,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8784,
+                      "name": "Uint256Slot",
+                      "nameLocations": [
+                        "4222:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8684,
+                      "src": "4222:11:44"
+                    },
+                    "referencedDeclaration": 8684,
+                    "src": "4222:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Uint256Slot_$8684",
+                      "typeString": "TransientSlot.Uint256Slot"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4221:18:44"
+            },
+            "returnParameters": {
+              "id": 8790,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8789,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "4271:5:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8793,
+                  "src": "4263:13:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8788,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4263:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4262:15:44"
+            },
+            "scope": 8827,
+            "src": "4207:156:44",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8803,
+              "nodeType": "Block",
+              "src": "4510:84:44",
+              "statements": [
+                {
+                  "AST": {
+                    "nativeSrc": "4545:43:44",
+                    "nodeType": "YulBlock",
+                    "src": "4545:43:44",
+                    "statements": [
+                      {
+                        "expression": {
+                          "arguments": [
+                            {
+                              "name": "slot",
+                              "nativeSrc": "4566:4:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "4566:4:44"
+                            },
+                            {
+                              "name": "value",
+                              "nativeSrc": "4572:5:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "4572:5:44"
+                            }
+                          ],
+                          "functionName": {
+                            "name": "tstore",
+                            "nativeSrc": "4559:6:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "4559:6:44"
+                          },
+                          "nativeSrc": "4559:19:44",
+                          "nodeType": "YulFunctionCall",
+                          "src": "4559:19:44"
+                        },
+                        "nativeSrc": "4559:19:44",
+                        "nodeType": "YulExpressionStatement",
+                        "src": "4559:19:44"
+                      }
+                    ]
+                  },
+                  "evmVersion": "cancun",
+                  "externalReferences": [
+                    {
+                      "declaration": 8797,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "4566:4:44",
+                      "valueSize": 1
+                    },
+                    {
+                      "declaration": 8799,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "4572:5:44",
+                      "valueSize": 1
+                    }
+                  ],
+                  "flags": [
+                    "memory-safe"
+                  ],
+                  "id": 8802,
+                  "nodeType": "InlineAssembly",
+                  "src": "4520:68:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8794,
+              "nodeType": "StructuredDocumentation",
+              "src": "4369:78:44",
+              "text": " @dev Store `value` at location `slot` in transient storage."
+            },
+            "id": 8804,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tstore",
+            "nameLocation": "4461:6:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8800,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8797,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "4480:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8804,
+                  "src": "4468:16:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_Uint256Slot_$8684",
+                    "typeString": "TransientSlot.Uint256Slot"
+                  },
+                  "typeName": {
+                    "id": 8796,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8795,
+                      "name": "Uint256Slot",
+                      "nameLocations": [
+                        "4468:11:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8684,
+                      "src": "4468:11:44"
+                    },
+                    "referencedDeclaration": 8684,
+                    "src": "4468:11:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Uint256Slot_$8684",
+                      "typeString": "TransientSlot.Uint256Slot"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8799,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "4494:5:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8804,
+                  "src": "4486:13:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8798,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4486:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4467:33:44"
+            },
+            "returnParameters": {
+              "id": 8801,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "4510:0:44"
+            },
+            "scope": 8827,
+            "src": "4452:142:44",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8814,
+              "nodeType": "Block",
+              "src": "4758:85:44",
+              "statements": [
+                {
+                  "AST": {
+                    "nativeSrc": "4793:44:44",
+                    "nodeType": "YulBlock",
+                    "src": "4793:44:44",
+                    "statements": [
+                      {
+                        "nativeSrc": "4807:20:44",
+                        "nodeType": "YulAssignment",
+                        "src": "4807:20:44",
+                        "value": {
+                          "arguments": [
+                            {
+                              "name": "slot",
+                              "nativeSrc": "4822:4:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "4822:4:44"
+                            }
+                          ],
+                          "functionName": {
+                            "name": "tload",
+                            "nativeSrc": "4816:5:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "4816:5:44"
+                          },
+                          "nativeSrc": "4816:11:44",
+                          "nodeType": "YulFunctionCall",
+                          "src": "4816:11:44"
+                        },
+                        "variableNames": [
+                          {
+                            "name": "value",
+                            "nativeSrc": "4807:5:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "4807:5:44"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "evmVersion": "cancun",
+                  "externalReferences": [
+                    {
+                      "declaration": 8808,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "4822:4:44",
+                      "valueSize": 1
+                    },
+                    {
+                      "declaration": 8811,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "4807:5:44",
+                      "valueSize": 1
+                    }
+                  ],
+                  "flags": [
+                    "memory-safe"
+                  ],
+                  "id": 8813,
+                  "nodeType": "InlineAssembly",
+                  "src": "4768:69:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8805,
+              "nodeType": "StructuredDocumentation",
+              "src": "4600:84:44",
+              "text": " @dev Load the value held at location `slot` in transient storage."
+            },
+            "id": 8815,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tload",
+            "nameLocation": "4698:5:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8809,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8808,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "4715:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8815,
+                  "src": "4704:15:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_Int256Slot_$8701",
+                    "typeString": "TransientSlot.Int256Slot"
+                  },
+                  "typeName": {
+                    "id": 8807,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8806,
+                      "name": "Int256Slot",
+                      "nameLocations": [
+                        "4704:10:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8701,
+                      "src": "4704:10:44"
+                    },
+                    "referencedDeclaration": 8701,
+                    "src": "4704:10:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Int256Slot_$8701",
+                      "typeString": "TransientSlot.Int256Slot"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4703:17:44"
+            },
+            "returnParameters": {
+              "id": 8812,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8811,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "4751:5:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8815,
+                  "src": "4744:12:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int256",
+                    "typeString": "int256"
+                  },
+                  "typeName": {
+                    "id": 8810,
+                    "name": "int256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4744:6:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_int256",
+                      "typeString": "int256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4743:14:44"
+            },
+            "scope": 8827,
+            "src": "4689:154:44",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8825,
+              "nodeType": "Block",
+              "src": "4988:84:44",
+              "statements": [
+                {
+                  "AST": {
+                    "nativeSrc": "5023:43:44",
+                    "nodeType": "YulBlock",
+                    "src": "5023:43:44",
+                    "statements": [
+                      {
+                        "expression": {
+                          "arguments": [
+                            {
+                              "name": "slot",
+                              "nativeSrc": "5044:4:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "5044:4:44"
+                            },
+                            {
+                              "name": "value",
+                              "nativeSrc": "5050:5:44",
+                              "nodeType": "YulIdentifier",
+                              "src": "5050:5:44"
+                            }
+                          ],
+                          "functionName": {
+                            "name": "tstore",
+                            "nativeSrc": "5037:6:44",
+                            "nodeType": "YulIdentifier",
+                            "src": "5037:6:44"
+                          },
+                          "nativeSrc": "5037:19:44",
+                          "nodeType": "YulFunctionCall",
+                          "src": "5037:19:44"
+                        },
+                        "nativeSrc": "5037:19:44",
+                        "nodeType": "YulExpressionStatement",
+                        "src": "5037:19:44"
+                      }
+                    ]
+                  },
+                  "evmVersion": "cancun",
+                  "externalReferences": [
+                    {
+                      "declaration": 8819,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "5044:4:44",
+                      "valueSize": 1
+                    },
+                    {
+                      "declaration": 8821,
+                      "isOffset": false,
+                      "isSlot": false,
+                      "src": "5050:5:44",
+                      "valueSize": 1
+                    }
+                  ],
+                  "flags": [
+                    "memory-safe"
+                  ],
+                  "id": 8824,
+                  "nodeType": "InlineAssembly",
+                  "src": "4998:68:44"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 8816,
+              "nodeType": "StructuredDocumentation",
+              "src": "4849:78:44",
+              "text": " @dev Store `value` at location `slot` in transient storage."
+            },
+            "id": 8826,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tstore",
+            "nameLocation": "4941:6:44",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8822,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8819,
+                  "mutability": "mutable",
+                  "name": "slot",
+                  "nameLocation": "4959:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8826,
+                  "src": "4948:15:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_userDefinedValueType$_Int256Slot_$8701",
+                    "typeString": "TransientSlot.Int256Slot"
+                  },
+                  "typeName": {
+                    "id": 8818,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 8817,
+                      "name": "Int256Slot",
+                      "nameLocations": [
+                        "4948:10:44"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 8701,
+                      "src": "4948:10:44"
+                    },
+                    "referencedDeclaration": 8701,
+                    "src": "4948:10:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_userDefinedValueType$_Int256Slot_$8701",
+                      "typeString": "TransientSlot.Int256Slot"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8821,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "4972:5:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8826,
+                  "src": "4965:12:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int256",
+                    "typeString": "int256"
+                  },
+                  "typeName": {
+                    "id": 8820,
+                    "name": "int256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4965:6:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_int256",
+                      "typeString": "int256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4947:31:44"
+            },
+            "returnParameters": {
+              "id": 8823,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "4988:0:44"
+            },
+            "scope": 8827,
+            "src": "4932:140:44",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 8828,
+        "src": "1163:3911:44",
+        "usedErrors": [],
+        "usedEvents": []
+      }
+    ],
+    "src": "197:4878:44"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.28+commit.7893614a.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2025-06-05T05:05:53.883Z",
+  "devdoc": {
+    "details": "Library for reading and writing value-types to specific transient storage slots. Transient slots are often used to store temporary values that are removed after the current transaction. This library helps with reading and writing to such slots without the need for inline assembly.  * Example reading and writing values using transient storage: ```solidity contract Lock {     using TransientSlot for *;     // Define the slot. Alternatively, use the SlotDerivation library to derive the slot.     bytes32 internal constant _LOCK_SLOT = 0xf4678858b2b588224636b8522b729e7722d32fc491da849ed75b3fdf3c84f542;     modifier locked() {         require(!_LOCK_SLOT.asBoolean().tload());         _LOCK_SLOT.asBoolean().tstore(true);         _;         _LOCK_SLOT.asBoolean().tstore(false);     } } ``` TIP: Consider using this library along with {SlotDerivation}.",
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
